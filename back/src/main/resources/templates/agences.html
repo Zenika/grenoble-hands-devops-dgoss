@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Grenoble Hands on</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Weather for Z agencies">
+    <link rel="stylesheet" href="/bulma.min.css">
+    <style>
+        section.section {
+            min-height: calc(100vh - 64px - 168px);
+        }
+    </style>
+</head>
+<body>
+<nav role="navigation" aria-label="main navigation" class="navbar is-primary">
+    <div class="container">
+        <div class="navbar-brand">
+            <h1 class="title navbar-item">Zenika Cities weather </h1>
+        </div>
+        <div class="navbar-menu">
+            <h2 class="navbar-item has-text-white"> The best weather app in Angular </h2>
+            <a class="navbar-item has-text-white" href="/"> Agences </a>
+            <a class="navbar-item has-text-white" href="/create"> Ajouter une agence </a>
+        </div>
+    </div>
+</nav>
+<section class="section container">
+    <div class="columns">
+        <div class="column is-half">
+            <h1 class="title">Agences Z</h1>
+            <div class="panel-block ng-star-inserted">
+                <div class="panel">
+                    <a class="panel-block p-4" th:each="agence : ${agences}" th:href="'/'+${agence.first}">
+                        <img th:src="'https://ssl.gstatic.com/onebox/weather/48/'+${agence.second?.weather}+'.png'"
+                             th:alt="${agence.second?.weather}" class="mr-4">
+                        <h2 class="subtitle" th:text="${agence.first}"></h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <p class="content has-text-centered">
+        Developed by
+        <a href="https://github.com/P0ppoff" rel="nofollow">Jules Hablot</a> with
+        <a href="https://github.com/chocho01" rel="nofollow">Martin Choraine</a> with
+        <a href="https://github.com/thuchede" rel="nofollow">Thomas Huchede</a> with
+        <a href="https://github.com/hadrien-thomas-zenika" rel="nofollow">Hadrien Thomas</a> with
+        <a href="http://www.7timer.info/index.php" rel="nofollow">7Timer!</a> for
+        <a href="https://zenika.com/" rel="nofollow">Zenika</a> with ❤️
+    </p>
+</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<div class="columns">
+    <div class="column is-one-third">
+        <h1 class="title">Agences Z</h1>
+        <div class="panel" *ngIf="cities$ | async as cities; else loading">
+            <a class="panel-block p-4" [routerLink]="['/city', city.name]" *ngFor="let city of cities">
+                <img [src]="'https://ssl.gstatic.com/onebox/weather/48/'+city.weather.weather+'.png'"
+                     [alt]="city.weather.weather" class="mr-4">
+                <h2 class="subtitle"><span>{{ city.name }}</span></h2>
+            </a>
+        </div>
+        <ng-template #loading>
+            <div class="panel-block">Loading...</div>
+        </ng-template>
+    </div>
+</div>

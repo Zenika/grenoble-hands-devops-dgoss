@@ -1,0 +1,93 @@
+<div class="columns">
+    <div class="column">
+        <article class="panel is-primary">
+            <h2 class="panel-heading">{{cityName$ | async}}</h2>
+            <div class="panel-block">
+                <app-l-map zoom="13" *ngIf="cityCoords$ | async as coords" [lat]="coords.latitude"
+                           [long]="coords.longitude"></app-l-map>
+            </div>
+            <div class="panel-block">
+                <div class="columns">
+                    <div class="column">
+                        <div class="field has-addons">
+                            <p class="control">
+                                <button class="control button" [class.is-info]="degree === 'C'" (click)="degree = 'C'">C°</button>
+                            </p>
+                            <p class="control">
+                                <button class="control button" [class.is-info]="degree === 'F'" (click)="degree = 'F'">F°</button>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field has-addons">
+                            <p class="control">
+                                <button class="button" [class.is-info]="mode === 'simple'" (click)="mode = 'simple'">
+                                    Simple
+                                </button>
+                            </p>
+                            <p class="control">
+                                <button class="button" [class.is-info]="mode === 'detailed'" (click)="mode = 'detailed'">
+                                    Detailed
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-block" *ngIf="mode === 'simple' && cityWeather$ | async as cityWeather; else loading">
+                <table class="table is-fullwidth">
+                    <tr>
+                        <th><span>Weather</span></th>
+                        <th><span>Date</span></th>
+                        <th><span>Max</span></th>
+                        <th><span>Min</span></th>
+                        <th style="width: 50%"></th>
+                    </tr>
+                    <tr *ngFor="let weather of cityWeather">
+                        <td>
+                            <div>
+                                <img [src]="'https://ssl.gstatic.com/onebox/weather/48/'+weather.weather+'.png'"
+                                     width="48"
+                                     [alt]="weather.weather">
+                            </div>
+                        </td>
+                        <td><span>{{weather.day | date:'mediumDate'}}</span></td>
+                        <td><span>{{weather.temperatureMax | degree: degree}}</span></td>
+                        <td><span>{{weather.temperatureMin | degree: degree}}</span></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-block" *ngIf="mode === 'detailed' && cityWeatherDetailed$ | async as cityWeather; else loading">
+                <table class="table is-fullwidth">
+                    <tr>
+                        <th>Weather</th>
+                        <th>Date</th>
+                        <th>Temp</th>
+                        <th style="width: 50%"></th>
+                    </tr>
+                    <tr *ngFor="let weather of cityWeather">
+                        <td>
+                            <div>
+                                <img [src]="'https://ssl.gstatic.com/onebox/weather/48/'+weather.weather+'.png'"
+                                     width="48"
+                                     [alt]="weather.weather">
+                            </div>
+                        </td>
+                        <td>{{weather.date | date:'MMM d, hh:mm'}}</td>
+                        <td>{{weather.temperature | degree: degree}}</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <ng-template #loading>
+                <div class="panel-block">Loading...</div>
+            </ng-template>
+            <div class="panel-block">
+                <a routerLink="/" class="button is-rounded">
+                    Go back home
+                </a>
+            </div>
+        </article>
+    </div>
+</div>
