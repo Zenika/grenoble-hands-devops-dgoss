@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  api:
+    image: zenika/cities-weather-api
+    build: back
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/zenika-weather
+      SPRING_DATASOURCE_USERNAME: zenika
+      SPRING_DATASOURCE_PASSWORD: zenika-password
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: curl -v --silent --request GET http://localhost:8080/actuator/health 2>&1 | grep UP
+      interval: 10s
+      timeout: 2s
+      retries: 5
+
+  front:
+    image: zenika/cities-weather-front
+    build: front
+    ports:
+      - 8888:80
+    environment:
+      API_URL: http://api:8080
+    depends_on:
+      api:
+        condition: service_healthy
+  db:
+    image: mysql:8.0.33
+    environment:
+      MYSQL_DATABASE: zenika-weather
+      MYSQL_USER: zenika
+      MYSQL_PASSWORD: zenika-password
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+    healthcheck:
+      test: mysqladmin ping --user=zenika --password=zenika-password
+      timeout: 2s
+      interval: 3s
+      retries: 10
