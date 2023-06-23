@@ -1,12 +1,11 @@
-FROM adoptopenjdk:11-jre-hotspot as builder
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} application.jar
-RUN java -Djarmode=layertools -jar application.jar extract
+FROM maven:3.9-eclipse-temurin-11 as builder
+WORKDIR /app
+COPY pom.xml .
+RUN mvn verify --fail-never
+COPY . /app
+RUN mvn install -DskipTests
 
 FROM adoptopenjdk:11-jre-hotspot
 RUN apt install curl
-COPY --from=builder dependencies/ ./
-COPY --from=builder snapshot-dependencies/ ./
-COPY --from=builder spring-boot-loader/ ./
-COPY --from=builder application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+COPY --from=builder /app/target/*.jar application.jar
+ENTRYPOINT ["java", "-jar", "application.jar"]
