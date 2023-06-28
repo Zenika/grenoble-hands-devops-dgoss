@@ -27,10 +27,13 @@ run_test_case () {
 }
 
 start_container () {
+    echo "Starting container..."
     c_id=$(docker run -d $1)
 }
 
 clean_container () {
+    echo "Cleaning up..."
     docker stop -t 0 $c_id
     docker rm -f $c_id
+    echo "Environment cleaned up!"
 }
