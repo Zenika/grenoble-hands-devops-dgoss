@@ -1,0 +1,33 @@
+http:
+  http://localhost:80:
+    status: 200
+    no-follow-redirects: false
+    timeout: 5000
+    body: ["GrenobleHandsOn"]
+
+file: 
+  /usr/share/nginx/html/index.html:
+    exists: true
+    filetype: file
+
+  /etc/nginx/templates/default.conf.template:
+    exists: true
+    filetype: file
+
+command:
+  source-map:
+    exec: "find /usr/share/nginx/html/ -name '*.map' | wc -l"
+    exit-status: 0
+    stdout:
+      - "0"
+
+process:
+  nginx:
+    running: true
+
+package:
+  nginx:
+    installed: true
+    versions:
+      contain-element:
+        have-prefix: 1.25.1
