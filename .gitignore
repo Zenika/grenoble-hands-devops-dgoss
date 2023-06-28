@@ -46,3 +46,6 @@ testem.log
 Thumbs.db
 /e2e/e2e.iml
 /e2e/target/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
