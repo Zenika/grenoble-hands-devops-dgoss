@@ -1,0 +1,23 @@
+process:
+  java:
+    running: true
+
+port:
+  tcp:8080:
+    listening: true
+    ip:
+    - 0.0.0.0
+
+command:
+  source-map:
+    exec: "java --version"
+    exit-status: 0
+    stdout:
+      - "openjdk 11.0.11"
+
+http:
+  http://localhost:8080/actuator/health:
+    status: 200
+    no-follow-redirects: false
+    timeout: 5000
+    body: ["UP"]
